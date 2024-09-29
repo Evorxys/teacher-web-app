@@ -17,7 +17,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const socket = io('https://websocket-server-teacher-student.onrender.com');  // Connect to your WebSocket server
 
     // Socket event to handle incoming messages from students
-    socket.on('receiveMessage', function(data) {  // Updated to 'receiveMessage'
+    socket.on('receiveMessage', function(data) {
         receiveMessage('Student', data.message);  // Display student's message
     });
 
