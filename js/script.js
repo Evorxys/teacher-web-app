@@ -12,6 +12,7 @@ document.addEventListener('DOMContentLoaded', function () {
     let interimSpeech = '';
     let finalSpeech = '';
     let debounceTimer = null;
+    let speechInterval = null; // Interval for auto-sending messages
 
     // Socket.IO connection
     const socket = io('https://websocket-server-teacher-student.onrender.com');
@@ -38,6 +39,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
             const newMessage = document.createElement('p');
             newMessage.classList.add('teacher-message');
+            newMessage.style.backgroundColor = '#cce5ff'; // Set background color for teacher messages
             newMessage.innerHTML = `<span class="label" style="color:blue;"><strong>Teacher:</strong></span> ${message}`;
             chatbox.appendChild(newMessage);
 
@@ -110,6 +112,7 @@ document.addEventListener('DOMContentLoaded', function () {
         recognition.onstart = function () {
             recognizing = true;
             speakBtn.textContent = 'Stop Speaking';
+            startAutoSendingMessages(); // Start sending messages automatically when speaking starts
         };
 
         recognition.onresult = function (event) {
@@ -136,6 +139,7 @@ document.addEventListener('DOMContentLoaded', function () {
         recognition.onend = function () {
             recognizing = false;
             speakBtn.textContent = 'Start Speaking';
+            stopAutoSendingMessages(); // Stop auto-sending messages when speaking ends
             messageBox.value = finalSpeech.trim();
             sendMessage();
         };
@@ -166,6 +170,21 @@ document.addEventListener('DOMContentLoaded', function () {
         autoScrollChatbox();
     }
 
+    // Auto-send messages while speaking
+    function startAutoSendingMessages() {
+        speechInterval = setInterval(() => {
+            if (finalSpeech.trim()) {
+                messageBox.value = finalSpeech.trim();
+                sendMessage();
+            }
+        }, 10000); // Auto-send messages every 10 seconds
+    }
+
+    function stopAutoSendingMessages() {
+        clearInterval(speechInterval);
+    }
+
+    // Save messages as a .docx file
     function saveMessages() {
         let teacherMessages = '';
         chatbox.querySelectorAll('p.teacher-message').forEach(message => {
@@ -183,15 +202,29 @@ document.addEventListener('DOMContentLoaded', function () {
             return;
         }
 
-        fileName = fileName.replace(/\.txt$/, '') + '.txt'; // Save as .txt for readability
-        const textContent = new Blob([teacherMessages], { type: 'text/plain' }); // Create a text blob
-        saveAs(textContent, fileName); // Use saveAs to download the text file
+        fileName = fileName.replace(/\.docx$/, '') + '.docx';
+        const doc = new DocxGen();
+        doc.loadZip(new PizZip());
+        doc.setData({ teacherMessages: teacherMessages });
+        doc.addSection({
+            properties: {},
+            children: [
+                new Paragraph({
+                    children: [
+                        new TextRun(teacherMessages),
+                    ],
+                }),
+            ],
+        });
+        const blob = doc.getZip().generate({ type: 'blob' });
+        saveAs(blob, fileName); // Save the .docx file using FileSaver.js
     }
 
+    // Print messages without "Teacher" labels
     function printMessages() {
         let printContent = '';
         chatbox.querySelectorAll('p.teacher-message').forEach(message => {
-            printContent += message.innerHTML + '<br>';
+            printContent += message.innerText.replace('Teacher: ', '') + '<br>';
         });
 
         if (printContent) {
