@@ -18,18 +18,15 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Socket event to handle incoming messages from students
     socket.on('receiveMessage', function(data) {
-        // Check if data is a string or an object with a message property
         let message;
         if (typeof data === 'string') {
-            message = data;  // If it's a string, use it directly
+            message = data; 
         } else if (data.message) {
-            message = data.message;  // If it's an object, use the message property
+            message = data.message;
         } else {
             console.error('Received data without message:', data);
             return;
         }
-        
-        // Display the message as coming from the student
         receiveMessage('Student', message);
     });
 
@@ -38,23 +35,20 @@ document.addEventListener('DOMContentLoaded', function() {
         const message = messageBox.value.trim();
         
         if (message) {
-            // Send message to the WebSocket server
             socket.emit('teacher-message', { message: message });
 
-            // Create message element for the chatbox
             const newMessage = document.createElement('p');
-            newMessage.classList.add('teacher');  // Add 'teacher' class for styling
+            newMessage.classList.add('teacher');  
             newMessage.innerHTML = `<span class="label">Teacher: </span>${message}`;
             chatbox.appendChild(newMessage);
 
             messageBox.value = '';  
-            finalSpeech = '';  // Reset final speech after sending
-            clearTypingMessage();  // Clear the typing message
-            autoScrollChatbox();  // Auto-scroll to the bottom
+            finalSpeech = '';  
+            clearTypingMessage();  
+            autoScrollChatbox();  
         }
     }
 
-    // Function to receive a message (from students)
     function receiveMessage(from, message) {
         const newMessage = document.createElement('p');
         newMessage.classList.add('chat-message');
@@ -68,22 +62,19 @@ document.addEventListener('DOMContentLoaded', function() {
         }
 
         chatbox.appendChild(newMessage);
-        autoScrollChatbox();  // Ensure the chatbox scrolls to the latest message
+        autoScrollChatbox(); 
     }
 
-    // Function to clear the message box
     function clearMessageBox() {
         messageBox.value = '';
-        finalSpeech = ''; // Clear the speech as well
-        clearTypingMessage();  // Clear the typing message
+        finalSpeech = ''; 
+        clearTypingMessage();  
     }
 
-    // Auto-scroll chatbox to show the latest message
     function autoScrollChatbox() {
         chatbox.scrollTop = chatbox.scrollHeight;
     }
 
-    // Function to clear typing message from chatbox
     function clearTypingMessage() {
         const typingMessage = document.getElementById('typing-message');
         if (typingMessage) {
@@ -91,7 +82,6 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    // Function to update typing message
     function updateTypingMessage() {
         const typingMessage = document.getElementById('typing-message');
         const message = messageBox.value.trim();
@@ -100,19 +90,18 @@ document.addEventListener('DOMContentLoaded', function() {
             if (!typingMessage) {
                 const newTypingMessage = document.createElement('p');
                 newTypingMessage.id = 'typing-message';
-                newTypingMessage.classList.add('teacher-typing');  // Updated class for typing messages
+                newTypingMessage.classList.add('teacher-typing');  
                 newTypingMessage.innerHTML = `<span class="label">Teacher (Typing): </span>${message}`;
                 chatbox.appendChild(newTypingMessage);
             } else {
                 typingMessage.innerHTML = `<span class="label">Teacher (Typing): </span>${message}`;
             }
-            autoScrollChatbox();  // Auto-scroll to the bottom
+            autoScrollChatbox();  
         } else {
-            clearTypingMessage();  // Clear typing message if input is empty
+            clearTypingMessage();  
         }
     }
 
-    // Speech recognition setup
     if ('webkitSpeechRecognition' in window) {
         recognition = new webkitSpeechRecognition();
         recognition.continuous = true;  
@@ -125,7 +114,7 @@ document.addEventListener('DOMContentLoaded', function() {
         };
 
         recognition.onresult = function(event) {
-            interimSpeech = ''; // Clear interim speech for this round
+            interimSpeech = ''; 
 
             for (let i = event.resultIndex; i < event.results.length; ++i) {
                 if (event.results[i].isFinal) {
@@ -135,12 +124,10 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
             }
 
-            // Debounce updating the chatbox to avoid duplicate speech display on mobile
             clearTimeout(debounceTimer);
             debounceTimer = setTimeout(() => {
-                // Display real-time speech in chatbox
                 displayRealTimeMessage(finalSpeech + interimSpeech);
-            }, 500); // 500ms delay to debounce updates
+            }, 500); 
         };
 
         recognition.onerror = function(event) {
@@ -150,29 +137,24 @@ document.addEventListener('DOMContentLoaded', function() {
         recognition.onend = function() {
             recognizing = false;
             speakBtn.textContent = 'Start Speaking';
-
-            // On stop, copy final speech to messagebox and treat it as sent
-            messageBox.value = finalSpeech.trim(); // Set the final speech in message box
-            sendMessage();  // Simulate sending the message
+            messageBox.value = finalSpeech.trim();
+            sendMessage();  
         };
     } else {
         alert('Speech Recognition API not supported in this browser.');
     }
 
-    // Function to start/stop speech recognition
+    // Ensure function is defined before it's used
     function toggleSpeechRecognition() {
         if (recognizing) {
-            recognition.stop();  // Stop speech recognition and trigger sending the message
+            recognition.stop();  
         } else {
-            recognition.start();  // Start speech recognition
+            recognition.start();  
         }
     }
 
-    // Function to display teacher's real-time speech in chatbox
     function displayRealTimeMessage(text) {
         const previousRealTimeMessage = document.getElementById('real-time-message');
-
-        // Remove the previous "Teacher (talking)" message to make space for a new one
         if (previousRealTimeMessage) {
             chatbox.removeChild(previousRealTimeMessage);
         }
@@ -183,10 +165,9 @@ document.addEventListener('DOMContentLoaded', function() {
         realTimeMessageElement.innerHTML = `<span style="color:green;font-size: 15px"><strong>Teacher (talking):</strong><span style="color:black;font-size: 15px"> ${text}`;
         chatbox.appendChild(realTimeMessageElement);
 
-        autoScrollChatbox();  // Auto-scroll to the bottom
+        autoScrollChatbox();  
     }
-    
-    // Save messages to a file
+
     function saveMessages() {
         let teacherMessages = '';
         chatbox.querySelectorAll('p').forEach(message => {
@@ -211,7 +192,6 @@ document.addEventListener('DOMContentLoaded', function() {
         saveAs(docxContent, fileName);
     }
 
-    // Print messages
     function printMessages() {
         let printContent = '';
         chatbox.querySelectorAll('p').forEach(message => {
@@ -233,7 +213,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    // Attach event listeners to buttons
+    // Attach event listeners to buttons AFTER defining the functions
     sendBtn.addEventListener('click', sendMessage);
     speakBtn.addEventListener('click', toggleSpeechRecognition);
     clearBtn.addEventListener('click', clearMessageBox);
