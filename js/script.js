@@ -32,7 +32,7 @@ document.addEventListener('DOMContentLoaded', function() {
             // Create message element for the chatbox
             const newMessage = document.createElement('p');
             newMessage.classList.add('teacher');  // Add 'teacher' class for styling
-            newMessage.innerHTML = `<span class="label">Teacher: </span>${message}`;
+            newMessage.innerHTML = <span class="label">Teacher: </span>${message};
             chatbox.appendChild(newMessage);
 
             messageBox.value = '';  
@@ -49,10 +49,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
         if (from === 'Student') {
             newMessage.classList.add('student-message');
-            newMessage.innerHTML = `<span style="color:red;"><strong>Student:</strong></span> ${message}`;
+            newMessage.innerHTML = <span style="color:red;"><strong>Student:</strong></span> ${message};
         } else {
             newMessage.classList.add('teacher-message');
-            newMessage.innerHTML = `<span style="color:blue;"><strong>Teacher:</strong></span> ${message}`;
+            newMessage.innerHTML = <span style="color:blue;"><strong>Teacher:</strong></span> ${message};
         }
 
         chatbox.appendChild(newMessage);
@@ -89,10 +89,10 @@ document.addEventListener('DOMContentLoaded', function() {
                 const newTypingMessage = document.createElement('p');
                 newTypingMessage.id = 'typing-message';
                 newTypingMessage.classList.add('teacher-typing');  // Updated class for typing messages
-                newTypingMessage.innerHTML = `<span class="label">Teacher (Typing): </span>${message}`;
+                newTypingMessage.innerHTML = <span class="label">Teacher (Typing): </span>${message};
                 chatbox.appendChild(newTypingMessage);
             } else {
-                typingMessage.innerHTML = `<span class="label">Teacher (Typing): </span>${message}`;
+                typingMessage.innerHTML = <span class="label">Teacher (Typing): </span>${message};
             }
             autoScrollChatbox();  // Auto-scroll to the bottom
         } else {
@@ -168,7 +168,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const realTimeMessageElement = document.createElement('p');
         realTimeMessageElement.id = 'real-time-message';
         realTimeMessageElement.classList.add('chat-message');
-        realTimeMessageElement.innerHTML = `<span style="color:green;font-size: 15px"><strong>Teacher (talking):</strong><span style="color:black;font-size: 15px"> ${text}`;
+        realTimeMessageElement.innerHTML = <span style="color:green;font-size: 15px"><strong>Teacher (talking):</strong><span style="color:black;font-size: 15px"> ${text};
         chatbox.appendChild(realTimeMessageElement);
 
         autoScrollChatbox();  // Auto-scroll to the bottom
