@@ -1,4 +1,4 @@
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     const messageBox = document.getElementById('messagebox');
     const chatbox = document.getElementById('chatbox');
     const sendBtn = document.getElementById('send-btn');
@@ -9,18 +9,18 @@ document.addEventListener('DOMContentLoaded', function() {
 
     let recognition;
     let recognizing = false;
-    let interimSpeech = '';  
-    let finalSpeech = '';    
-    let debounceTimer = null; 
+    let interimSpeech = '';
+    let finalSpeech = '';
+    let debounceTimer = null;
 
     // Socket.IO connection
     const socket = io('https://websocket-server-teacher-student.onrender.com');
 
     // Socket event to handle incoming messages from students
-    socket.on('receiveMessage', function(data) {
+    socket.on('receiveMessage', function (data) {
         let message;
         if (typeof data === 'string') {
-            message = data; 
+            message = data;
         } else if (data.message) {
             message = data.message;
         } else {
@@ -32,19 +32,19 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function sendMessage() {
         const message = messageBox.value.trim();
-        
+
         if (message) {
             socket.emit('teacher-message', { message: message });
 
             const newMessage = document.createElement('p');
-            newMessage.classList.add('teacher-message');  
-            newMessage.innerHTML = `<span class="label">Teacher: </span>${message}`;
+            newMessage.classList.add('teacher-message');
+            newMessage.innerHTML = `<span class="label" style="color:blue;"><strong>Teacher:</strong></span> ${message}`;
             chatbox.appendChild(newMessage);
 
-            messageBox.value = '';  
-            finalSpeech = '';  
-            clearTypingMessage();  
-            autoScrollChatbox();  
+            messageBox.value = '';
+            finalSpeech = '';
+            clearTypingMessage();
+            autoScrollChatbox();
         }
     }
 
@@ -54,20 +54,20 @@ document.addEventListener('DOMContentLoaded', function() {
 
         if (from === 'Student') {
             newMessage.classList.add('student-message');
-            newMessage.innerHTML = `<span style="color:red;"><strong>Student:</strong></span> ${message}`;
+            newMessage.innerHTML = `<span class="label" style="color:red;"><strong>Student:</strong></span> ${message}`;
         } else {
             newMessage.classList.add('teacher-message');
-            newMessage.innerHTML = `<span style="color:blue;"><strong>Teacher:</strong></span> ${message}`;
+            newMessage.innerHTML = `<span class="label" style="color:blue;"><strong>Teacher:</strong></span> ${message}`;
         }
 
         chatbox.appendChild(newMessage);
-        autoScrollChatbox(); 
+        autoScrollChatbox();
     }
 
     function clearMessageBox() {
         messageBox.value = '';
-        finalSpeech = ''; 
-        clearTypingMessage();  
+        finalSpeech = '';
+        clearTypingMessage();
     }
 
     function autoScrollChatbox() {
@@ -84,36 +84,36 @@ document.addEventListener('DOMContentLoaded', function() {
     function updateTypingMessage() {
         const typingMessage = document.getElementById('typing-message');
         const message = messageBox.value.trim();
-    
+
         if (message) {
             if (!typingMessage) {
                 const newTypingMessage = document.createElement('p');
                 newTypingMessage.id = 'typing-message';
-                newTypingMessage.classList.add('teacher-typing');  
-                newTypingMessage.innerHTML = `<span class="label">Teacher (Typing): </span>${message}`;
+                newTypingMessage.classList.add('teacher-typing');
+                newTypingMessage.innerHTML = `<span class="label" style="color:blue;"><strong>Teacher (Typing):</strong></span> ${message}`;
                 chatbox.appendChild(newTypingMessage);
             } else {
-                typingMessage.innerHTML = `<span class="label">Teacher (Typing): </span>${message}`;
+                typingMessage.innerHTML = `<span class="label" style="color:blue;"><strong>Teacher (Typing):</strong></span> ${message}`;
             }
-            autoScrollChatbox();  
+            autoScrollChatbox();
         } else {
-            clearTypingMessage();  
+            clearTypingMessage();
         }
     }
 
     if ('webkitSpeechRecognition' in window) {
         recognition = new webkitSpeechRecognition();
-        recognition.continuous = true;  
+        recognition.continuous = true;
         recognition.interimResults = true;
         recognition.lang = 'en-US';
 
-        recognition.onstart = function() {
+        recognition.onstart = function () {
             recognizing = true;
             speakBtn.textContent = 'Stop Speaking';
         };
 
-        recognition.onresult = function(event) {
-            interimSpeech = ''; 
+        recognition.onresult = function (event) {
+            interimSpeech = '';
 
             for (let i = event.resultIndex; i < event.results.length; ++i) {
                 if (event.results[i].isFinal) {
@@ -126,18 +126,18 @@ document.addEventListener('DOMContentLoaded', function() {
             clearTimeout(debounceTimer);
             debounceTimer = setTimeout(() => {
                 displayRealTimeMessage(finalSpeech + interimSpeech);
-            }, 500); 
+            }, 500);
         };
 
-        recognition.onerror = function(event) {
+        recognition.onerror = function (event) {
             console.error('Speech recognition error: ', event.error);
         };
 
-        recognition.onend = function() {
+        recognition.onend = function () {
             recognizing = false;
             speakBtn.textContent = 'Start Speaking';
             messageBox.value = finalSpeech.trim();
-            sendMessage();  
+            sendMessage();
         };
     } else {
         alert('Speech Recognition API not supported in this browser.');
@@ -145,9 +145,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function toggleSpeechRecognition() {
         if (recognizing) {
-            recognition.stop();  
+            recognition.stop();
         } else {
-            recognition.start();  
+            recognition.start();
         }
     }
 
@@ -160,10 +160,10 @@ document.addEventListener('DOMContentLoaded', function() {
         const realTimeMessageElement = document.createElement('p');
         realTimeMessageElement.id = 'real-time-message';
         realTimeMessageElement.classList.add('chat-message');
-        realTimeMessageElement.innerHTML = `<span style="color:green;font-size: 15px"><strong>Teacher (talking):</strong><span style="color:black;font-size: 15px"> ${text}`;
+        realTimeMessageElement.innerHTML = `<span style="color:green;font-size: 15px"><strong>Teacher (talking):</strong></span> ${text}`;
         chatbox.appendChild(realTimeMessageElement);
 
-        autoScrollChatbox();  
+        autoScrollChatbox();
     }
 
     function saveMessages() {
@@ -183,9 +183,9 @@ document.addEventListener('DOMContentLoaded', function() {
             return;
         }
 
-        fileName = fileName.replace(/\.docx$/, '') + '.docx';
-        const docxContent = new Blob([teacherMessages], { type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' });
-        saveAs(docxContent, fileName);
+        fileName = fileName.replace(/\.txt$/, '') + '.txt'; // Save as .txt for readability
+        const textContent = new Blob([teacherMessages], { type: 'text/plain' }); // Create a text blob
+        saveAs(textContent, fileName); // Use saveAs to download the text file
     }
 
     function printMessages() {
