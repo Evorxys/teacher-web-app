@@ -179,7 +179,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 messageBox.value = finalSpeech.trim();
                 sendMessage();
             }
-        }, 1000); // Interval for auto-sending set to 5 seconds
+        }, 1000); // Interval for auto-sending set to 1 second
     }
 
     function stopAutoSendingMessages() {
