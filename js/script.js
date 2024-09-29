@@ -17,7 +17,6 @@ document.addEventListener('DOMContentLoaded', function () {
     // Socket.IO connection
     const socket = io('https://websocket-server-teacher-student.onrender.com');
 
-    // Socket event to handle incoming messages from students
     socket.on('receiveMessage', function (data) {
         let message;
         if (typeof data === 'string') {
@@ -177,7 +176,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 messageBox.value = finalSpeech.trim();
                 sendMessage();
             }
-        }, 10000); // Auto-send messages every 10 seconds
+        }, 5000); // Reduced interval to 5 seconds
     }
 
     function stopAutoSendingMessages() {
@@ -185,7 +184,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     // Save messages as a .docx file
-    function saveMessages() {
+    async function saveMessages() {
         let teacherMessages = '';
         chatbox.querySelectorAll('p.teacher-message').forEach(message => {
             teacherMessages += message.innerText + '\n';
@@ -203,20 +202,21 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
         fileName = fileName.replace(/\.docx$/, '') + '.docx';
-        const doc = new DocxGen();
-        doc.loadZip(new PizZip());
-        doc.setData({ teacherMessages: teacherMessages });
-        doc.addSection({
-            properties: {},
-            children: [
-                new Paragraph({
+
+        const doc = new docx.Document({
+            sections: [
+                {
                     children: [
-                        new TextRun(teacherMessages),
+                        new docx.Paragraph({
+                            text: teacherMessages,
+                            spacing: { after: 200 }, // Add spacing between paragraphs
+                        }),
                     ],
-                }),
+                },
             ],
         });
-        const blob = doc.getZip().generate({ type: 'blob' });
+
+        const blob = await docx.Packer.toBlob(doc);
         saveAs(blob, fileName); // Save the .docx file using FileSaver.js
     }
 
