@@ -9,12 +9,12 @@ document.addEventListener('DOMContentLoaded', function() {
 
     let recognition;
     let recognizing = false;
-    let interimSpeech = '';  // Interim recognized speech
-    let finalSpeech = '';    // Final recognized speech
-    let debounceTimer = null; // Timer for debouncing the interim updates
+    let interimSpeech = '';  
+    let finalSpeech = '';    
+    let debounceTimer = null; 
 
     // Socket.IO connection
-    const socket = io('https://websocket-server-teacher-student.onrender.com');  // Connect to your WebSocket server
+    const socket = io('https://websocket-server-teacher-student.onrender.com');
 
     // Socket event to handle incoming messages from students
     socket.on('receiveMessage', function(data) {
@@ -30,7 +30,6 @@ document.addEventListener('DOMContentLoaded', function() {
         receiveMessage('Student', message);
     });
 
-    // Function to send a message (teacher's message)
     function sendMessage() {
         const message = messageBox.value.trim();
         
@@ -38,7 +37,7 @@ document.addEventListener('DOMContentLoaded', function() {
             socket.emit('teacher-message', { message: message });
 
             const newMessage = document.createElement('p');
-            newMessage.classList.add('teacher');  
+            newMessage.classList.add('teacher-message');  
             newMessage.innerHTML = `<span class="label">Teacher: </span>${message}`;
             chatbox.appendChild(newMessage);
 
@@ -144,7 +143,6 @@ document.addEventListener('DOMContentLoaded', function() {
         alert('Speech Recognition API not supported in this browser.');
     }
 
-    // Ensure function is defined before it's used
     function toggleSpeechRecognition() {
         if (recognizing) {
             recognition.stop();  
@@ -170,10 +168,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function saveMessages() {
         let teacherMessages = '';
-        chatbox.querySelectorAll('p').forEach(message => {
-            if (message.innerHTML.includes('<strong>Teacher:</strong>')) {
-                teacherMessages += message.innerText + '\n';
-            }
+        chatbox.querySelectorAll('p.teacher-message').forEach(message => {
+            teacherMessages += message.innerText + '\n';
         });
 
         if (teacherMessages.trim() === '') {
@@ -194,10 +190,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function printMessages() {
         let printContent = '';
-        chatbox.querySelectorAll('p').forEach(message => {
-            if (message.innerHTML.includes('<strong>Teacher:</strong>')) {
-                printContent += message.innerHTML + '<br>';
-            }
+        chatbox.querySelectorAll('p.teacher-message').forEach(message => {
+            printContent += message.innerHTML + '<br>';
         });
 
         if (printContent) {
@@ -209,11 +203,10 @@ document.addEventListener('DOMContentLoaded', function() {
             printWindow.document.close();
             printWindow.print();
         } else {
-            alert('No messages to print.');
+            alert('No Teacher messages to print.');
         }
     }
 
-    // Attach event listeners to buttons AFTER defining the functions
     sendBtn.addEventListener('click', sendMessage);
     speakBtn.addEventListener('click', toggleSpeechRecognition);
     clearBtn.addEventListener('click', clearMessageBox);
