@@ -18,11 +18,19 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Socket event to handle incoming messages from students
     socket.on('receiveMessage', function(data) {
-        if (data.message) {
-            receiveMessage('Student', data.message);  // Display student's message
+        // Check if data is a string or an object with a message property
+        let message;
+        if (typeof data === 'string') {
+            message = data;  // If it's a string, use it directly
+        } else if (data.message) {
+            message = data.message;  // If it's an object, use the message property
         } else {
             console.error('Received data without message:', data);
+            return;
         }
+        
+        // Display the message as coming from the student
+        receiveMessage('Student', message);
     });
 
     // Function to send a message (teacher's message)
@@ -214,29 +222,21 @@ document.addEventListener('DOMContentLoaded', function() {
 
         if (printContent) {
             const printWindow = window.open('', '', 'height=400,width=600');
-            printWindow.document.write('<html><head><title>Print Teacher Messages</title></head><body>');
+            printWindow.document.write('<html><head><title>Print Messages</title>');
+            printWindow.document.write('</head><body>');
             printWindow.document.write(printContent);
             printWindow.document.write('</body></html>');
             printWindow.document.close();
             printWindow.print();
         } else {
-            alert("No teacher messages to print.");
+            alert('No messages to print.');
         }
     }
 
-    // Event listeners
+    // Attach event listeners to buttons
     sendBtn.addEventListener('click', sendMessage);
     speakBtn.addEventListener('click', toggleSpeechRecognition);
     clearBtn.addEventListener('click', clearMessageBox);
     saveBtn.addEventListener('click', saveMessages);
     printBtn.addEventListener('click', printMessages);
-    messageBox.addEventListener('input', updateTypingMessage);
-
-    // Handle 'Enter' key to send messages
-    messageBox.addEventListener('keypress', function(event) {
-        if (event.key === 'Enter') {
-            event.preventDefault();
-            sendMessage();
-        }
-    });
 });
