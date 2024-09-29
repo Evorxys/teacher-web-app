@@ -1,270 +1,229 @@
-/* General body styling */
-body {
-    font-family: Arial, sans-serif;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    background-color: #f4f4f4;
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+/* General container styling */
+/* General container styling */
+.container {
     background-image: url("https://static.vecteezy.com/system/resources/previews/011/189/962/original/abstract-wall-decor-design-with-hand-drawn-leaf-pattern-aesthetic-background-free-vector.jpg");
     background-size: cover;
     background-position: center;
     background-attachment: fixed;
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    box-sizing: border-box;
 }
 
-/* Responsive glass effect container */
 .glass-container {
     background: rgba(255, 255, 255, 0.2);
     backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.3);
+    border: 1px solid rgb(255, 255, 255);
     box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
     border-radius: 10px;
     padding: 20px;
-    width: 90%;
+    width: 100%;
     max-width: 700px;
-    z-index: 2;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
     text-align: center;
 }
 
-/* Title styling */
 h1 {
-    color: #003334;
-    font-family: 'Times New Roman', Times, serif;
-    font-size: 2rem;
-    padding: 10px;
-    background: rgba(255, 255, 255, 0.3);
+    color: #392e18;
+    text-align: center;
     backdrop-filter: blur(10px);
-    max-width: 500px;
-    border-radius: 5px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    transition: color 0.3s, transform 0.3s;
+    transition: transform 0.3s, background-color 0.3s;
+    margin-bottom: 20px;
 }
 
 h1:hover {
-    color: #80e5ff;
-    transform: scale(1.05);
+    color: #003334;
+    transform: scale(1.1);
 }
 
-/* Camera panel styling */
-.camera-panel {
-    margin-bottom: 20px;
-    position: relative;
-}
-
-#cameraFeed {
-    width: 100%;
-    max-width: 500px;
-    height: 200px;
-    border-radius: 10px;
-    display: none;
-}
-
-/* Static image overlay when camera is off */
-.static-image {
-    width: 100%;
-    max-width: 500px;
-    height: 200px;
-    border-radius: 10px;
-    display: block;
-}
-
-/* Add glowing edges when camera is active */
-.camera-glow {
-    box-shadow: 0 0 20px 5px rgba(255, 215, 0, 0.7);
-    animation: rotateLight 2s infinite linear;
-}
-
-@keyframes rotateLight {
-    0% {
-        box-shadow: 0 0 20px 5px rgba(255, 215, 0, 0.7);
-    }
-    50% {
-        box-shadow: 0 0 30px 10px rgba(255, 215, 0, 0.9);
-    }
-    100% {
-        box-shadow: 0 0 20px 5px rgba(255, 215, 0, 0.7);
-    }
-}
-
-/* Message Box */
-.message-box {
+/* Chatbox styles */
+#chatbox {
     display: flex;
-    justify-content: space-between;
-    margin-bottom: 20px;
-    width: 100%;
-    transition: transform 0.3s, box-shadow 0.3s;
-}
-
-.message-box:hover {
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
-}
-
-.message-box input {
-    width: 70%;
-    padding: 10px;
-    font-size: 1rem;
-    border: 2px solid #5c6400;
-    border-radius: 5px;
-    background-color: #f9f4cc;
-    word-wrap: break-word;
-    transition: transform 0.3s;
-}
-
-.message-box button {
-    width: 25%;
-    padding: 10px;
-    font-size: 1rem;
-    cursor: pointer;
-    background-color: #697300;
-    border: 2px solid #003334;
-    border-radius: 5px;
-    transition: all 0.3s, transform 0.3s;
-    color: azure;
-}
-
-.message-box button:hover {
-    background-color: #ffaa00;
-    transform: scale(1.05);
-}
-
-/* Gesture Input Field Styling */
-#gestureInput {
-    width: 70%;
-    padding: 10px;
-    margin-top: 10px;
-    font-size: 1rem;
-    border: 2px solid #ffaa00;
-    border-radius: 5px;
-    background-color: #fef5e7;
-    word-wrap: break-word;
-    transition: border-color 0.3s ease-in-out;
-    color: darkslategray;
-}
-
-/* Chatbox styling with hover scale animation */
-.chatbox {
-    border: 2px solid #5c6400;
-    padding: 10px;
-    width: 100%;
-    height: 300px;
-    overflow-y: auto;
-    background-color: lightyellow;
-    border-radius: 5px;
-    transition: transform 0.3s;
-}
-
-.chatbox:hover {
-    transform: scale(1.02);
-}
-
-#chatbox p {
-    text-align: left;
+    flex-direction: column;
+    align-items: flex-start;
+    font-size: 18px;
+    font-family: 'Times New Roman', Times, serif;
+    resize: both;
+    overflow: auto;
+    min-height: 100px;
+    min-width: 300px;
+    max-width: 100%;
+    max-height: 400px;
+    margin: 10px 0;
     padding: 10px;
     border-radius: 10px;
-    margin-bottom: 10px;
-    overflow-wrap: break-word;
+    background-color: lightyellow;
+    border: 5px solid #697300;
+    transition: transform 0.3s;
 }
 
-/* Styles for Student messages */
-#chatbox p.student {
-    background-color: #e1f5fe;
-    color: black;
-    border-left: 5px solid green;
-}
-
-#chatbox p.student .label {
-    color: green;
-    font-weight: bold;
-}
-
-/* Styles for Teacher messages */
-#chatbox p.teacher {
-    background-color: #dcedc8;
-    color: black;
-    border-left: 5px solid blue;
-    text-align: right;
+#chatbox:hover {
+    transform: scale(1.01);
 }
 
 #chatbox p.teacher .label {
     color: blue;
     font-weight: bold;
+    text-align: right;
 }
 
-/* Toggle camera button styling */
-#toggleCameraBtn {
+/* Styles for Teacher (Typing) messages */
+#chatbox p.teacher-typing {
+    font-size: 15px;
+    background-color: #fff4a0;
+    color: orange;
+    border-left: 5px solid orange;
+    padding: 5px;
+    border-radius: 10px;
+    margin-bottom: 10px;
+    text-align: right;
+    word-wrap: break-word;
+    max-width: 80%;
+}
+
+/* Styles for Teacher messages */
+#chatbox p.teacher {
+    font-size: 15px;
+    align-self: flex-end; /* Align teacher messages to the right */
+    background-color: #fff4a0;
+    color: rgb(0, 0, 0);
+    border-left: 5px solid orange;
+    padding: 5px;
+    border-radius: 10px;
+    margin-bottom: 1px; /* Reduce space between messages */
+    text-align: left; /* Ensure the text inside is aligned to the right */
+    word-wrap: break-word;
+    max-width: 80%; /* Keep the message width from stretching across the entire chatbox */
+}
+
+/* Styles for Student messages */
+#chatbox p.student {
+    align-self: flex-start; /* Align student messages to the left */
+    background-color: #e0ffe0;
+    color: rgb(0, 0, 0);
+    border-left: 5px solid darkgreen;
+    padding: 5px;
+    border-radius: 10px;
+    margin-bottom: 2px; /* Reduce space between messages */
+    text-align: left; /* Ensure the text inside is aligned to the left */
+    word-wrap: break-word;
+    max-width: 80%; /* Keep the message width from stretching across the entire chatbox */
+}
+
+/* Styles for messages */
+#chatbox p.teacher, #chatbox p.student {
+    margin-bottom: 5px; /* Reduce space between messages */
+    padding: 8px;
+    word-wrap: break-word;
+    max-width: 80%;
+}
+
+/* Messagebox and button styling */
+#messagebox-container {
     width: 100%;
-    max-width: 180px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    caret-color: sienna;
+    transition: transform 0.3s, background-color 0.3s;
+}
+
+#messagebox {
+    font-size: 16px;
+    padding: 10px;    /* Optional: to add padding for better readability */
+    font-family: Arial, Helvetica, sans-serif;
+    width: 100%;
+    padding: 5px;
+    margin-bottom: 10px;
+    max-height: fit-content;
+    border-radius: 10px;
+    background-color: #f9f6e4;
+    border: 2px solid #003334;
+    box-sizing: border-box;
+}
+
+#messagebox-container:hover {
+    transform: scale(1.05);
+}
+
+#send-btn, #clear-btn, #save-btn, #print-btn {
+    background-color: #f9f4cc;
+    border: 2px solid #003334;
+    color: #003334;
+    font-size: 25px;
+    font-weight: bold;
+    width: 100%;
+    max-width: 180px; /* Ensure buttons don't grow too large */
+    margin-bottom: 3px;
+    padding: 10px;;
+    border-radius: 10px;
+    cursor: pointer;
+    font-family: 'Times New Roman', Times, serif;
+    font-size: larger;
+    text-align: center;
+    transition: transform 0.3s, background-color 0.3s;
+}
+
+#send-btn:hover {
+    background-color: rgb(0, 207, 0);
+    color: azure;
+    transform: scale(1.03);
+}
+
+#clear-btn:hover {
+    background-color: rgb(203, 0, 0);
+    color: azure;
+    transform: scale(1.03);
+}
+
+#save-btn:hover, #print-btn:hover {
+    background-color: #ffaa00;
+    transform: scale(1.03);
+}
+
+#speak-btn {
+    font-weight: bold;
+    font-size: 100%;
+    font-family: 'Times New Roman', Times, serif;
+    width: 100%;
+    max-width: 40%;  /* Ensure buttons don't grow too large */
     margin: 10px 0;
     padding: 10px;
     border-radius: 10px;
-    cursor: pointer;
-    font-size: larger;
-    text-align: center;
     background-color: #dbcb55;
-    transition: transform 0.3s, background-color 0.3s;
     border: 2px solid #003334;
+    cursor: pointer;
+    text-align: center;
+    transition: transform 0.3s, background-color 0.3s;
 }
 
-#toggleCameraBtn:hover {
-    transform: scale(1.05);
-    background-color: #ffaa00;
+#speak-btn:hover {
+    background-color: rgb(151, 133, 0);
+    color: white;
+    transform: scale(1.2);
 }
 
-/* Media Queries for Responsiveness */
-@media (max-width: 768px) {
+/* Chat message styling */
+.chat-message {
+    background-color: #fff4a0;
+    margin: 5px;
+    padding: 5px;
+    text-align: left;
+    word-wrap: break-word;
+    border-radius: 5px;
+}
+
+/* Responsive design */
+@media (max-width: 600px) {
     .glass-container {
-        padding: 15px;
-        max-width: 600px;
-    }
-
-    #cameraFeed, .static-image {
-        width: 100%;
-        height: auto;
-    }
-
-    h1 {
-        font-size: 1.5rem;
-    }
-
-    .message-box input {
-        width: 65%;
-    }
-
-    .message-box button {
-        width: 30%;
-    }
-}
-
-@media (max-width: 480px) {
-    .glass-container {
+        width: 95%;
         padding: 10px;
-        max-width: 400px;
     }
 
-    #cameraFeed, .static-image {
+    #chatbox, #messagebox, #send-btn, #clear-btn, #speak-btn, #save-btn, #print-btn {
         width: 100%;
-        height: auto;
-    }
-
-    h1 {
-        font-size: 1.2rem;
-    }
-
-    .message-box input {
-        width: 60%;
-    }
-
-    .message-box button {
-        width: 35%;
-    }
-
-    .chatbox {
-        height: 200px;
     }
 }
