@@ -18,8 +18,12 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Socket event to handle incoming messages from students
     socket.on('receiveMessage', function(data) {
-        // Ensure the data has the 'message' property correctly
-        receiveMessage('Student', data.message ? data.message : 'No message received');  // Display student's message
+        // Ensure that we check for the message property correctly
+        if (data && data.message) {
+            receiveMessage('Student', data.message);  // Display student's message
+        } else {
+            console.error('Received data without message:', data);
+        }
     });
 
     // Function to send a message (teacher's message)
