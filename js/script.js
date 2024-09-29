@@ -26,12 +26,9 @@ document.addEventListener('DOMContentLoaded', function() {
             message = data.message;  // If it's an object, use the message property
         } else {
             console.error('Received data without message:', data);
-            return; // Exit the function if there's no message
+            return;
         }
         
-        // Log the received message to the console
-        console.log("Received message: ", message);
-
         // Display the message as coming from the student
         receiveMessage('Student', message);
     });
@@ -57,7 +54,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    // Function to receive and display a message (from students)
+    // Function to receive a message (from students)
     function receiveMessage(from, message) {
         const newMessage = document.createElement('p');
         newMessage.classList.add('chat-message');
@@ -70,14 +67,8 @@ document.addEventListener('DOMContentLoaded', function() {
             newMessage.innerHTML = `<span style="color:blue;"><strong>Teacher:</strong></span> ${message}`;
         }
 
-        // Append the new message to the chatbox
         chatbox.appendChild(newMessage);
         autoScrollChatbox();  // Ensure the chatbox scrolls to the latest message
-    }
-
-    // Function to auto-scroll chatbox to show the latest message
-    function autoScrollChatbox() {
-        chatbox.scrollTop = chatbox.scrollHeight;
     }
 
     // Function to clear the message box
@@ -85,6 +76,11 @@ document.addEventListener('DOMContentLoaded', function() {
         messageBox.value = '';
         finalSpeech = ''; // Clear the speech as well
         clearTypingMessage();  // Clear the typing message
+    }
+
+    // Auto-scroll chatbox to show the latest message
+    function autoScrollChatbox() {
+        chatbox.scrollTop = chatbox.scrollHeight;
     }
 
     // Function to clear typing message from chatbox
@@ -116,7 +112,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    // Speech recognition setup (remains unchanged)
+    // Speech recognition setup
     if ('webkitSpeechRecognition' in window) {
         recognition = new webkitSpeechRecognition();
         recognition.continuous = true;  
@@ -161,6 +157,80 @@ document.addEventListener('DOMContentLoaded', function() {
         };
     } else {
         alert('Speech Recognition API not supported in this browser.');
+    }
+
+    // Function to start/stop speech recognition
+    function toggleSpeechRecognition() {
+        if (recognizing) {
+            recognition.stop();  // Stop speech recognition and trigger sending the message
+        } else {
+            recognition.start();  // Start speech recognition
+        }
+    }
+
+    // Function to display teacher's real-time speech in chatbox
+    function displayRealTimeMessage(text) {
+        const previousRealTimeMessage = document.getElementById('real-time-message');
+
+        // Remove the previous "Teacher (talking)" message to make space for a new one
+        if (previousRealTimeMessage) {
+            chatbox.removeChild(previousRealTimeMessage);
+        }
+
+        const realTimeMessageElement = document.createElement('p');
+        realTimeMessageElement.id = 'real-time-message';
+        realTimeMessageElement.classList.add('chat-message');
+        realTimeMessageElement.innerHTML = `<span style="color:green;font-size: 15px"><strong>Teacher (talking):</strong><span style="color:black;font-size: 15px"> ${text}`;
+        chatbox.appendChild(realTimeMessageElement);
+
+        autoScrollChatbox();  // Auto-scroll to the bottom
+    }
+    
+    // Save messages to a file
+    function saveMessages() {
+        let teacherMessages = '';
+        chatbox.querySelectorAll('p').forEach(message => {
+            if (message.innerHTML.includes('<strong>Teacher:</strong>')) {
+                teacherMessages += message.innerText + '\n';
+            }
+        });
+
+        if (teacherMessages.trim() === '') {
+            alert('No Teacher messages to save.');
+            return;
+        }
+
+        let fileName = prompt('Enter a name for your file:', 'TeacherMessages');
+        if (!fileName) {
+            alert('File name cannot be empty!');
+            return;
+        }
+
+        fileName = fileName.replace(/\.docx$/, '') + '.docx';
+        const docxContent = new Blob([teacherMessages], { type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' });
+        saveAs(docxContent, fileName);
+    }
+
+    // Print messages
+    function printMessages() {
+        let printContent = '';
+        chatbox.querySelectorAll('p').forEach(message => {
+            if (message.innerHTML.includes('<strong>Teacher:</strong>')) {
+                printContent += message.innerHTML + '<br>';
+            }
+        });
+
+        if (printContent) {
+            const printWindow = window.open('', '', 'height=400,width=600');
+            printWindow.document.write('<html><head><title>Print Messages</title>');
+            printWindow.document.write('</head><body>');
+            printWindow.document.write(printContent);
+            printWindow.document.write('</body></html>');
+            printWindow.document.close();
+            printWindow.print();
+        } else {
+            alert('No messages to print.');
+        }
     }
 
     // Attach event listeners to buttons
