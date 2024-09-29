@@ -186,62 +186,27 @@ document.addEventListener('DOMContentLoaded', function () {
         clearInterval(speechInterval);
     }
 
-    // Save messages as a .docx file with formatted content
-    async function saveMessages() {
-        let teacherMessages = [];
-        
-        // Collect all teacher messages from the chatbox
+    // Save messages as a formatted .txt file
+    function saveMessages() {
+        let teacherMessages = '';
         chatbox.querySelectorAll('p.teacher-message').forEach(message => {
-            teacherMessages.push(message.innerText.replace('Teacher: ', '').trim());
+            teacherMessages += message.innerText.replace('Teacher: ', '') + ' ';
         });
 
-        if (teacherMessages.length === 0) {
+        if (teacherMessages.trim() === '') {
             alert('No Teacher messages to save.');
             return;
         }
 
-        let fileName = prompt('Enter a name for your file:', 'TeacherMessages');
-        if (!fileName) {
-            alert('File name cannot be empty!');
-            return;
+        let formattedContent = "Teacher Messages Summary:\n\n";
+        formattedContent += teacherMessages.trim().replace(/\s+/g, ' ').replace(/(\.|\?|!)(\s)/g, '$1\n\n');
+        
+        const blob = new Blob([formattedContent], { type: 'text/plain;charset=utf-8' });
+        const fileName = prompt('Enter a name for your file:', 'TeacherMessages');
+        
+        if (fileName) {
+            saveAs(blob, `${fileName}.txt`);
         }
-
-        // Ensure the file name ends with .docx
-        fileName = fileName.replace(/\.docx$/, '') + '.docx';
-
-        // Create the document with formatted content
-        const doc = new docx.Document({
-            sections: [{
-                properties: {},
-                children: [
-                    new docx.Paragraph({
-                        text: "Teacher's Chat Messages",
-                        heading: docx.HeadingLevel.TITLE,
-                        alignment: docx.AlignmentType.CENTER,
-                    }),
-                    ...teacherMessages.map(message => new docx.Paragraph({
-                        text: message,
-                        spacing: {
-                            before: 200,
-                            after: 200,
-                        },
-                        alignment: docx.AlignmentType.LEFT,
-                        bullet: {
-                            level: 0 // Adds bullet points to each message
-                        }
-                    }))
-                ]
-            }]
-        });
-
-        // Convert the document to a blob and download it
-        const blob = await docx.Packer.toBlob(doc);
-        const link = document.createElement('a');
-        link.href = window.URL.createObjectURL(blob);
-        link.download = fileName;
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
     }
 
     // Print messages without "Teacher" labels
