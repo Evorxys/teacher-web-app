@@ -17,7 +17,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const socket = io('https://websocket-server-teacher-student.onrender.com');  // Connect to your WebSocket server
 
     // Socket event to handle incoming messages from students
-    socket.on('student-message', function(data) {
+    socket.on('receiveMessage', function(data) {  // Updated to 'receiveMessage'
         receiveMessage('Student', data.message);  // Display student's message
     });
 
@@ -226,5 +226,13 @@ document.addEventListener('DOMContentLoaded', function() {
     clearBtn.addEventListener('click', clearMessageBox);
     saveBtn.addEventListener('click', saveMessages);
     printBtn.addEventListener('click', printMessages);
-    messageBox.addEventListener('input', updateTypingMessage);  // Update typing message on input
+    messageBox.addEventListener('input', updateTypingMessage);
+
+    // Handle 'Enter' key to send messages
+    messageBox.addEventListener('keypress', function(event) {
+        if (event.key === 'Enter') {
+            event.preventDefault();
+            sendMessage();
+        }
+    });
 });
