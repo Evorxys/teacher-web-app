@@ -179,21 +179,23 @@ document.addEventListener('DOMContentLoaded', function () {
                 messageBox.value = finalSpeech.trim();
                 sendMessage();
             }
-        }, 1000); // Reduced interval for auto-sending to 1 second
+        }, 1000); // Interval for auto-sending set to 1 second
     }
 
     function stopAutoSendingMessages() {
         clearInterval(speechInterval);
     }
 
-    // Save messages as a .txt file
-    function saveMessages() {
-        let teacherMessages = '';
+    // Save messages as a .docx file with formatted content
+    async function saveMessages() {
+        let teacherMessages = [];
+        
+        // Collect all teacher messages from the chatbox
         chatbox.querySelectorAll('p.teacher-message').forEach(message => {
-            teacherMessages += message.innerText + '\n';
+            teacherMessages.push(message.innerText.replace('Teacher: ', '').trim());
         });
 
-        if (teacherMessages.trim() === '') {
+        if (teacherMessages.length === 0) {
             alert('No Teacher messages to save.');
             return;
         }
@@ -204,13 +206,39 @@ document.addEventListener('DOMContentLoaded', function () {
             return;
         }
 
-        fileName = fileName.replace(/\.txt$/, '') + '.txt';
+        // Ensure the file name ends with .docx
+        fileName = fileName.replace(/\.docx$/, '') + '.docx';
 
-        const blob = new Blob([teacherMessages], { type: 'text/plain' });
+        // Create the document with formatted content
+        const doc = new docx.Document({
+            sections: [{
+                properties: {},
+                children: [
+                    new docx.Paragraph({
+                        text: "Teacher's Chat Messages",
+                        heading: docx.HeadingLevel.TITLE,
+                        alignment: docx.AlignmentType.CENTER,
+                    }),
+                    ...teacherMessages.map(message => new docx.Paragraph({
+                        text: message,
+                        spacing: {
+                            before: 200,
+                            after: 200,
+                        },
+                        alignment: docx.AlignmentType.LEFT,
+                        bullet: {
+                            level: 0 // Adds bullet points to each message
+                        }
+                    }))
+                ]
+            }]
+        });
+
+        // Convert the document to a blob and download it
+        const blob = await docx.Packer.toBlob(doc);
         const link = document.createElement('a');
         link.href = window.URL.createObjectURL(blob);
         link.download = fileName;
-
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
