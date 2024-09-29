@@ -18,9 +18,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Socket event to handle incoming messages from students
     socket.on('receiveMessage', function(data) {
-        // Check if data.message exists, otherwise fallback to a default message
-        const studentMessage = data && data.message ? data.message : 'No message received';
-        receiveMessage('Student', studentMessage);  // Display student's message
+        // Ensure the data has the 'message' property correctly
+        receiveMessage('Student', data.message ? data.message : 'No message received');  // Display student's message
     });
 
     // Function to send a message (teacher's message)
@@ -170,12 +169,12 @@ document.addEventListener('DOMContentLoaded', function() {
         const realTimeMessageElement = document.createElement('p');
         realTimeMessageElement.id = 'real-time-message';
         realTimeMessageElement.classList.add('chat-message');
-        realTimeMessageElement.innerHTML = `<span style="color:green;font-size: 15px"><strong>Teacher (talking):</strong><span style="color:black;font-size: 15px"> ${text}</span>`;
+        realTimeMessageElement.innerHTML = `<span style="color:green;font-size: 15px"><strong>Teacher (talking):</strong><span style="color:black;font-size: 15px"> ${text}`;
         chatbox.appendChild(realTimeMessageElement);
 
         autoScrollChatbox();  // Auto-scroll to the bottom
     }
-
+    
     // Save messages to a file
     function saveMessages() {
         let teacherMessages = '';
