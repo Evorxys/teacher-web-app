@@ -104,7 +104,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     if ('webkitSpeechRecognition' in window) {
         recognition = new webkitSpeechRecognition();
-        recognition.continuous = true;
+        recognition.continuous = true;  // Keep listening
         recognition.interimResults = true;
         recognition.lang = 'en-US';
 
@@ -136,11 +136,10 @@ document.addEventListener('DOMContentLoaded', function () {
         };
 
         recognition.onend = function () {
-            recognizing = false;
-            speakBtn.textContent = 'Start Speaking';
-            stopAutoSendingMessages(); // Stop auto-sending messages when speaking ends
-            messageBox.value = finalSpeech.trim();
-            sendMessage();
+            if (recognizing) {
+                // Restart speech recognition automatically when it stops
+                recognition.start();
+            }
         };
     } else {
         alert('Speech Recognition API not supported in this browser.');
@@ -148,8 +147,12 @@ document.addEventListener('DOMContentLoaded', function () {
 
     function toggleSpeechRecognition() {
         if (recognizing) {
+            recognizing = false;
             recognition.stop();
+            speakBtn.textContent = 'Start Speaking';
+            stopAutoSendingMessages(); // Stop auto-sending messages when speaking ends
         } else {
+            recognizing = true;
             recognition.start();
         }
     }
@@ -176,7 +179,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 messageBox.value = finalSpeech.trim();
                 sendMessage();
             }
-        }, 5000); // Reduced interval to 5 seconds
+        }, 1000); // Interval for auto-sending set to 5 seconds
     }
 
     function stopAutoSendingMessages() {
@@ -245,4 +248,7 @@ document.addEventListener('DOMContentLoaded', function () {
     clearBtn.addEventListener('click', clearMessageBox);
     saveBtn.addEventListener('click', saveMessages);
     printBtn.addEventListener('click', printMessages);
+
+    // Automatically update typing message when user types
+    messageBox.addEventListener('input', updateTypingMessage);
 });
