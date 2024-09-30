@@ -175,12 +175,15 @@ document.addEventListener('DOMContentLoaded', function () {
     // Auto-send messages while speaking
     function startAutoSendingMessages() {
         speechInterval = setInterval(() => {
-            if (finalSpeech.trim()) {
-                messageBox.value = finalSpeech.trim();
-                sendMessage();
+            // Combine interim speech (still being spoken) and final speech (already confirmed)
+            const combinedSpeech = (finalSpeech + interimSpeech).trim();
+            if (combinedSpeech) {
+                messageBox.value = combinedSpeech; // Set the combined speech to the message box
+                sendMessage(); // Send the message
             }
-        }, 1000); // Interval for auto-sending set to 1 second
+        }, 5000); // Interval for auto-sending set to 5 seconds
     }
+
 
     function stopAutoSendingMessages() {
         clearInterval(speechInterval);
