@@ -13,6 +13,7 @@ document.addEventListener('DOMContentLoaded', function () {
     let finalSpeech = '';
     let debounceTimer = null;
     let speechInterval = null; // Interval for auto-sending messages
+    let teacherMessageElement = null; // Element to hold the teacher's single message
 
     // Socket.IO connection
     const socket = io('https://websocket-server-teacher-student.onrender.com');
@@ -36,14 +37,20 @@ document.addEventListener('DOMContentLoaded', function () {
         if (message) {
             socket.emit('teacher-message', { message: message });
 
-            const newMessage = document.createElement('p');
-            newMessage.classList.add('teacher-message');
-            newMessage.style.backgroundColor = '#cce5ff'; // Set background color for teacher messages
-            newMessage.innerHTML = `<span class="label" style="color:blue;"><strong>Teacher:</strong></span> ${message}`;
-            chatbox.appendChild(newMessage);
+            // Check if a teacher message element already exists
+            if (!teacherMessageElement) {
+                teacherMessageElement = document.createElement('p');
+                teacherMessageElement.classList.add('teacher-message');
+                teacherMessageElement.style.backgroundColor = '#cce5ff'; // Set background color for teacher messages
+                teacherMessageElement.innerHTML = `<span class="label" style="color:blue;"><strong>Teacher:</strong></span> ${message}`;
+                chatbox.appendChild(teacherMessageElement);
+            } else {
+                // If element exists, just update its content
+                teacherMessageElement.innerHTML = `<span class="label" style="color:blue;"><strong>Teacher:</strong></span> ${message}`;
+            }
 
-            messageBox.value = '';
-            finalSpeech = '';
+            messageBox.value = ''; // Clear message box
+            finalSpeech = ''; // Reset the speech content
             clearTypingMessage();
             autoScrollChatbox();
         }
@@ -172,7 +179,7 @@ document.addEventListener('DOMContentLoaded', function () {
         autoScrollChatbox();
     }
 
-    // Auto-send messages while speaking
+    // Auto-send messages while speaking in one paragraph
     function startAutoSendingMessages() {
         speechInterval = setInterval(() => {
             // Combine interim speech (still being spoken) and final speech (already confirmed)
@@ -183,7 +190,6 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         }, 5000); // Interval for auto-sending set to 5 seconds
     }
-
 
     function stopAutoSendingMessages() {
         clearInterval(speechInterval);
