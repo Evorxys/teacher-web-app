@@ -13,6 +13,7 @@ document.addEventListener('DOMContentLoaded', function () {
     let finalSpeech = '';
     let debounceTimer = null;
     let speechInterval = null; // Interval for auto-sending messages
+    let lastSentSpeech = ''; // To track last sent speech
 
     // Socket.IO connection
     const socket = io('https://websocket-server-teacher-student.onrender.com');
@@ -39,11 +40,12 @@ document.addEventListener('DOMContentLoaded', function () {
             const newMessage = document.createElement('p');
             newMessage.classList.add('teacher-message');
             newMessage.style.backgroundColor = '#cce5ff'; // Set background color for teacher messages
-            newMessage.innerHTML = <span class="label" style="color:blue;"><strong>Teacher:</strong></span> ${message};
+            newMessage.innerHTML = `<span class="label" style="color:blue;"><strong>Teacher:</strong></span> ${message}`;
             chatbox.appendChild(newMessage);
 
             messageBox.value = '';
-            finalSpeech = '';
+            finalSpeech = ''; // Reset final speech after sending
+            lastSentSpeech = ''; // Reset last sent speech
             clearTypingMessage();
             autoScrollChatbox();
         }
@@ -55,10 +57,10 @@ document.addEventListener('DOMContentLoaded', function () {
 
         if (from === 'Student') {
             newMessage.classList.add('student-message');
-            newMessage.innerHTML = <span class="label" style="color:red;"><strong>Student:</strong></span> ${message};
+            newMessage.innerHTML = `<span class="label" style="color:red;"><strong>Student:</strong></span> ${message}`;
         } else {
             newMessage.classList.add('teacher-message');
-            newMessage.innerHTML = <span class="label" style="color:blue;"><strong>Teacher:</strong></span> ${message};
+            newMessage.innerHTML = `<span class="label" style="color:blue;"><strong>Teacher:</strong></span> ${message}`;
         }
 
         chatbox.appendChild(newMessage);
@@ -91,10 +93,10 @@ document.addEventListener('DOMContentLoaded', function () {
                 const newTypingMessage = document.createElement('p');
                 newTypingMessage.id = 'typing-message';
                 newTypingMessage.classList.add('teacher-typing');
-                newTypingMessage.innerHTML = <span class="label" style="color:blue;"><strong>Teacher (Typing):</strong></span> ${message};
+                newTypingMessage.innerHTML = `<span class="label" style="color:blue;"><strong>Teacher (Typing):</strong></span> ${message}`;
                 chatbox.appendChild(newTypingMessage);
             } else {
-                typingMessage.innerHTML = <span class="label" style="color:blue;"><strong>Teacher (Typing):</strong></span> ${message};
+                typingMessage.innerHTML = `<span class="label" style="color:blue;"><strong>Teacher (Typing):</strong></span> ${message}`;
             }
             autoScrollChatbox();
         } else {
@@ -166,7 +168,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const realTimeMessageElement = document.createElement('p');
         realTimeMessageElement.id = 'real-time-message';
         realTimeMessageElement.classList.add('chat-message');
-        realTimeMessageElement.innerHTML = <span style="color:green;font-size: 15px"><strong>Teacher (talking):</strong></span> ${text};
+        realTimeMessageElement.innerHTML = `<span style="color:green;font-size: 15px"><strong>Teacher (talking):</strong></span> ${text}`;
         chatbox.appendChild(realTimeMessageElement);
 
         autoScrollChatbox();
@@ -175,11 +177,12 @@ document.addEventListener('DOMContentLoaded', function () {
     // Auto-send messages while speaking
     function startAutoSendingMessages() {
         speechInterval = setInterval(() => {
-            if (finalSpeech.trim()) {
+            if (finalSpeech.trim() && finalSpeech.trim() !== lastSentSpeech) {
                 messageBox.value = finalSpeech.trim();
                 sendMessage();
+                lastSentSpeech = finalSpeech.trim(); // Update last sent speech
             }
-        }, 1000); // Interval for auto-sending set to 1 second
+        }, 5000); // Interval for auto-sending set to 5 seconds
     }
 
     function stopAutoSendingMessages() {
@@ -205,7 +208,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const fileName = prompt('Enter a name for your file:', 'TeacherMessages');
         
         if (fileName) {
-            saveAs(blob, ${fileName}.txt);
+            saveAs(blob, `${fileName}.txt`);
         }
     }
 
