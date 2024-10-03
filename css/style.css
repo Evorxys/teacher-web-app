@@ -1,5 +1,4 @@
 /* General container styling */
-/* General container styling */
 .container {
     background-image: url("https://i.pinimg.com/564x/77/35/8c/77358c961aa56096cf920058f34c4a47.jpg");
     background-size: cover;
@@ -27,7 +26,7 @@
 }
 
 h1 {
-    color: #392e18;
+    color: #000000;
     text-align: center;
     backdrop-filter: blur(10px);
     transition: transform 0.3s, background-color 0.3s;
@@ -55,8 +54,8 @@ h1:hover {
     margin: 10px 0;
     padding: 10px;
     border-radius: 10px;
-    background-color: lightyellow;
-    border: 5px solid #697300;
+    background-color: #213455;
+    border: 5px solid #5ed7ff;
     transition: transform 0.3s;
 }
 
@@ -64,56 +63,66 @@ h1:hover {
     transform: scale(1.01);
 }
 
-#chatbox p.teacher .label {
-    color: blue;
-    font-weight: bold;
-    text-align: right;
+/* Updated styles for Teacher messages */
+#chatbox p.teacher {
+    font-size: 15px;
+    align-self: flex-end; /* Align teacher messages to the right */
+    background-color: #213455; /* Same background as student for consistency */
+    color: #ffffff; /* White text for better contrast */
+    border-left: 5px solid rgb(0, 225, 255); /* Blue border for the teacher */
+    padding: 10px; /* Padding for better readability */
+    border-radius: 12px; /* Smooth rounded corners */
+    margin-bottom: 10px; /* Space between messages */
+    word-wrap: break-word; /* Prevent text overflow */
+    max-width: 80%; /* Limit message width */
+    text-align: left; /* Align text left */
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); /* Add subtle shadow for depth */
+    transition: background-color 0.3s ease-in-out;
+}
+
+/* Hover effect for Teacher messages */
+#chatbox p.teacher:hover {
+    background-color: #18416b; /* Slightly darker blue on hover */
 }
 
 /* Styles for Teacher (Typing) messages */
 #chatbox p.teacher-typing {
     font-size: 15px;
-    background-color: #fff4a0;
-    color: orange;
-    border-left: 5px solid orange;
-    padding: 5px;
-    border-radius: 10px;
-    margin-bottom: 10px;
-    text-align: right;
-    word-wrap: break-word;
-    max-width: 80%;
+    align-self: flex-end; /* Align teacher typing messages to the right */
+    background-color: #a0efff; /* Light blue background for typing messages */
+    color: #213455; /* Darker text color */
+    border-left: 5px solid rgb(255, 179, 0); /* Yellow border for typing messages */
+    padding: 8px; /* Padding for better readability */
+    border-radius: 12px; /* Smooth rounded corners */
+    margin-bottom: 10px; /* Space between typing messages */
+    word-wrap: break-word; /* Prevent text overflow */
+    max-width: 80%; /* Limit message width */
+    text-align: left; /* Align text left */
 }
 
-/* Styles for Teacher messages */
-#chatbox p.teacher {
-    font-size: 15px;
-    align-self: flex-end; /* Align teacher messages to the right */
-    background-color: #fff4a0;
-    color: rgb(0, 0, 0);
-    border-left: 5px solid orange;
-    padding: 5px;
-    border-radius: 10px;
-    margin-bottom: 1px; /* Reduce space between messages */
-    text-align: left; /* Ensure the text inside is aligned to the right */
-    word-wrap: break-word;
-    max-width: 80%; /* Keep the message width from stretching across the entire chatbox */
+/* Styles for Teacher label */
+#chatbox p.teacher .label {
+    color: #00b7cc; /* Bright blue label for the teacher */
+    font-weight: bold; /* Bold for emphasis */
+    text-align: right; /* Align label to the right */
+    margin-bottom: 5px; /* Space between label and message */
 }
 
 /* Styles for Student messages */
 #chatbox p.student {
-    align-self: flex-start; /* Align student messages to the left */
+    align-self: flex-start; 
     background-color: #e0ffe0;
     color: rgb(0, 0, 0);
     border-left: 5px solid darkgreen;
-    padding: 5px;
+    padding: 8px; /* Increased padding */
     border-radius: 10px;
-    margin-bottom: 2px; /* Reduce space between messages */
-    text-align: left; /* Ensure the text inside is aligned to the left */
+    margin-bottom: 10px; /* Increased space between messages */
+    text-align: left;
     word-wrap: break-word;
-    max-width: 80%; /* Keep the message width from stretching across the entire chatbox */
+    max-width: 80%;
 }
 
-/* Styles for messages */
+/* General message styling */
 #chatbox p.teacher, #chatbox p.student {
     margin-bottom: 5px; /* Reduce space between messages */
     padding: 8px;
@@ -140,17 +149,19 @@ h1:hover {
     margin-bottom: 10px;
     max-height: fit-content;
     border-radius: 10px;
-    background-color: #f9f6e4;
-    border: 2px solid #003334;
+    background-color: #213455;
+    border: 2px solid #58caff;
     box-sizing: border-box;
+    color: aliceblue;
 }
 
 #messagebox-container:hover {
     transform: scale(1.05);
 }
 
+/* Button styling */
 #send-btn, #clear-btn, #save-btn, #print-btn {
-    background-color: #f9f4cc;
+    background-color: #00b7cc;
     border: 2px solid #003334;
     color: #003334;
     font-size: 25px;
@@ -158,7 +169,7 @@ h1:hover {
     width: 100%;
     max-width: 180px; /* Ensure buttons don't grow too large */
     margin-bottom: 3px;
-    padding: 10px;;
+    padding: 10px;
     border-radius: 10px;
     cursor: pointer;
     font-family: 'Times New Roman', Times, serif;
@@ -184,6 +195,7 @@ h1:hover {
     transform: scale(1.03);
 }
 
+/* Speak button styling */
 #speak-btn {
     font-weight: bold;
     font-size: 100%;
@@ -193,7 +205,7 @@ h1:hover {
     margin: 10px 0;
     padding: 10px;
     border-radius: 10px;
-    background-color: #dbcb55;
+    background-color: #dbac55;
     border: 2px solid #003334;
     cursor: pointer;
     text-align: center;
@@ -208,7 +220,8 @@ h1:hover {
 
 /* Chat message styling */
 .chat-message {
-    background-color: #fff4a0;
+    background-color: #a0faff;
+    border-left: 5px #ffaa00;
     margin: 5px;
     padding: 5px;
     text-align: left;
