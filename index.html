@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teacher Interface v1</title>
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+    <!-- Add these scripts in your HTML file -->
+    <script src="https://unpkg.com/docx@6.2.1/build/index.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/docx/7.1.1/docx.min.js"></script>
+    <script src="https://cdn.socket.io/4.3.2/socket.io.min.js"></script>
+</head>
+<body class="container">
+    <div class="glass-container">
+        <h1>Teacher Communication Interface</h1>
+
+        <!-- Chatbox -->
+        <div id="chatbox"></div>
+
+        <!-- Messagebox and Buttons -->
+        <div id="messagebox-container">
+            <textarea id="messagebox" placeholder="Type your message here"></textarea>
+        </div>
+
+        <div class="button-container">
+            <!-- Send and Clear Buttons -->
+            <div class="button-row">
+                <button id="send-btn">Send</button>
+                <button id="clear-btn">Clear</button>
+            </div>
+
+            <!-- Save and Print Buttons -->
+            <div class="button-row">
+                <button id="save-btn">Save</button>
+                <button id="print-btn">Print</button>
+            </div>
+
+            <!-- Speak Button -->
+            <button id="speak-btn">Start Speaking</button>
+        </div>
+
+        <!-- Input box and Generate Button -->
+        <div class="button-container">
+            <input type="text" id="random-number-box" readonly>
+            <button id="generate-btn">Generate</button>
+        </div>
+    </div>
+
+    <script src="js/script.js"></script>
+</body>
+</html>

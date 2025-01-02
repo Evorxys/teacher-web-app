@@ -1,0 +1,277 @@
+/* General container styling */
+.container {
+    background-image: url("https://i.pinimg.com/564x/77/35/8c/77358c961aa56096cf920058f34c4a47.jpg");
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.glass-container {
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgb(255, 255, 255);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    padding: 20px;
+    width: 100%;
+    max-width: 700px;
+    text-align: center;
+}
+
+h1 {
+    color: #000000;
+    text-align: center;
+    backdrop-filter: blur(10px);
+    transition: transform 0.3s, background-color 0.3s;
+    margin-bottom: 20px;
+}
+
+h1:hover {
+    color: #003334;
+    transform: scale(1.1);
+}
+
+/* Chatbox styles */
+#chatbox {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    font-size: 18px;
+    font-family: 'Times New Roman', Times, serif;
+    resize: both;
+    overflow: auto;
+    min-height: 100px;
+    min-width: 300px;
+    max-width: 100%;
+    max-height: 400px;
+    margin: 10px 0;
+    padding: 10px;
+    border-radius: 10px;
+    background-color: #213455;
+    border: 5px solid #5ed7ff;
+    transition: transform 0.3s;
+}
+
+#chatbox:hover {
+    transform: scale(1.01);
+}
+
+/* Updated styles for Teacher messages */
+#chatbox p.teacher {
+    font-size: 15px;
+    align-self: flex-end; /* Align teacher messages to the right */
+    background-color: #213455; /* Same background as student for consistency */
+    color: #ffffff; /* White text for better contrast */
+    border-left: 5px solid rgb(0, 225, 255); /* Blue border for the teacher */
+    padding: 10px; /* Padding for better readability */
+    border-radius: 12px; /* Smooth rounded corners */
+    margin-bottom: 10px; /* Space between messages */
+    word-wrap: break-word; /* Prevent text overflow */
+    max-width: 80%; /* Limit message width */
+    text-align: left; /* Align text left */
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); /* Add subtle shadow for depth */
+    transition: background-color 0.3s ease-in-out;
+}
+
+/* Hover effect for Teacher messages */
+#chatbox p.teacher:hover {
+    background-color: #18416b; /* Slightly darker blue on hover */
+}
+
+/* Styles for Teacher (Typing) messages */
+#chatbox p.teacher-typing {
+    font-size: 15px;
+    align-self: flex-end; /* Align teacher typing messages to the right */
+    background-color: #a0efff; /* Light blue background for typing messages */
+    color: #213455; /* Darker text color */
+    border-left: 5px solid rgb(255, 179, 0); /* Yellow border for typing messages */
+    padding: 8px; /* Padding for better readability */
+    border-radius: 12px; /* Smooth rounded corners */
+    margin-bottom: 10px; /* Space between typing messages */
+    word-wrap: break-word; /* Prevent text overflow */
+    max-width: 80%; /* Limit message width */
+    text-align: left; /* Align text left */
+}
+
+/* Styles for Teacher label */
+#chatbox p.teacher .label {
+    color: #00b7cc; /* Bright blue label for the teacher */
+    font-weight: bold; /* Bold for emphasis */
+    text-align: right; /* Align label to the right */
+    margin-bottom: 5px; /* Space between label and message */
+}
+
+/* Styles for Student messages */
+#chatbox p.student {
+    align-self: flex-start; 
+    background-color: #e0ffe0;
+    color: rgb(0, 0, 0);
+    border-left: 5px solid darkgreen;
+    padding: 8px; /* Increased padding */
+    border-radius: 10px;
+    margin-bottom: 10px; /* Increased space between messages */
+    text-align: left;
+    word-wrap: break-word;
+    max-width: 80%;
+}
+
+/* General message styling */
+#chatbox p.teacher, #chatbox p.student {
+    margin-bottom: 5px; /* Reduce space between messages */
+    padding: 8px;
+    word-wrap: break-word;
+    max-width: 80%;
+}
+
+/* Messagebox and button styling */
+#messagebox-container {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    caret-color: sienna;
+    transition: transform 0.3s, background-color 0.3s;
+}
+
+#messagebox {
+    font-size: 16px;
+    padding: 10px;    /* Optional: to add padding for better readability */
+    font-family: Arial, Helvetica, sans-serif;
+    width: 100%;
+    padding: 5px;
+    margin-bottom: 10px;
+    max-height: fit-content;
+    border-radius: 10px;
+    background-color: #213455;
+    border: 2px solid #58caff;
+    box-sizing: border-box;
+    color: aliceblue;
+}
+
+#messagebox-container:hover {
+    transform: scale(1.05);
+}
+
+/* Button styling */
+#send-btn, #clear-btn, #save-btn, #print-btn {
+    background-color: #00b7cc;
+    border: 2px solid #003334;
+    color: #003334;
+    font-size: 25px;
+    font-weight: bold;
+    width: 100%;
+    max-width: 180px; /* Ensure buttons don't grow too large */
+    margin-bottom: 3px;
+    padding: 10px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-family: 'Times New Roman', Times, serif;
+    font-size: larger;
+    text-align: center;
+    transition: transform 0.3s, background-color 0.3s;
+}
+
+#send-btn:hover {
+    background-color: rgb(0, 207, 0);
+    color: azure;
+    transform: scale(1.03);
+}
+
+#clear-btn:hover {
+    background-color: rgb(203, 0, 0);
+    color: azure;
+    transform: scale(1.03);
+}
+
+#save-btn:hover, #print-btn:hover {
+    background-color: #ffaa00;
+    transform: scale(1.03);
+}
+
+/* Speak button styling */
+#speak-btn {
+    font-weight: bold;
+    font-size: 100%;
+    font-family: 'Times New Roman', Times, serif;
+    width: 100%;
+    max-width: 40%;  /* Ensure buttons don't grow too large */
+    margin: 10px 0;
+    padding: 10px;
+    border-radius: 10px;
+    background-color: #dbac55;
+    border: 2px solid #003334;
+    cursor: pointer;
+    text-align: center;
+    transition: transform 0.3s, background-color 0.3s;
+}
+
+#speak-btn:hover {
+    background-color: rgb(151, 133, 0);
+    color: white;
+    transform: scale(1.2);
+}
+
+/* Chat message styling */
+.chat-message {
+    background-color: #a0faff;
+    border-left: 5px #ffaa00;
+    margin: 5px;
+    padding: 5px;
+    text-align: left;
+    word-wrap: break-word;
+    border-radius: 5px;
+}
+
+/* Styles for input box */
+#random-number-box {
+    font-size: 16px;
+    padding: 10px;
+    width: 100%;
+    max-width: 180px;
+    margin-bottom: 10px;
+    border-radius: 10px;
+    background-color: #f0f0f0;
+    border: 2px solid #ccc;
+    box-sizing: border-box;
+    color: #333;
+    text-align: center;
+}
+
+/* Styles for generate button */
+#generate-btn {
+    background-color: #4CAF50;
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 10px;
+    transition: background-color 0.3s ease;
+}
+
+#generate-btn:hover {
+    background-color: #45a049;
+}
+
+/* Responsive design */
+@media (max-width: 600px) {
+    .glass-container {
+        width: 95%;
+        padding: 10px;
+    }
+
+    #chatbox, #messagebox, #send-btn, #clear-btn, #speak-btn, #save-btn, #print-btn {
+        width: 100%;
+    }
+}
