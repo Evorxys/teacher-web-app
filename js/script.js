@@ -56,19 +56,24 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function receiveMessage(from, message) {
-        const newMessage = document.createElement('p');
-        newMessage.classList.add('chat-message');
+        const roomId = randomNumberBox.value;
+        const messageRoomId = message.match(/^\((\d+)\)/);
 
-        if (from === 'Student') {
-            newMessage.classList.add('student-message');
-            newMessage.innerHTML = message;
-        } else {
-            newMessage.classList.add('teacher-message');
-            newMessage.innerHTML = message;
+        if (messageRoomId && messageRoomId[1] === roomId) {
+            const newMessage = document.createElement('p');
+            newMessage.classList.add('chat-message');
+
+            if (from === 'Student') {
+                newMessage.classList.add('student-message');
+                newMessage.innerHTML = message;
+            } else {
+                newMessage.classList.add('teacher-message');
+                newMessage.innerHTML = message;
+            }
+
+            chatbox.appendChild(newMessage);
+            autoScrollChatbox();
         }
-
-        chatbox.appendChild(newMessage);
-        autoScrollChatbox();
     }
 
     function clearMessageBox() {

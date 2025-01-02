@@ -130,6 +130,17 @@ h1:hover {
     max-width: 80%;
 }
 
+/* General message styling */
+#chatbox p.teacher-message, #chatbox p.student-message {
+    padding: 10px; /* Add padding for better readability */
+    border: 1px solid #ccc; /* Add border for better separation */
+    border-radius: 10px; /* Smooth rounded corners */
+    margin-bottom: 10px; /* Space between messages */
+    word-wrap: break-word; /* Prevent text overflow */
+    max-width: 80%; /* Limit message width */
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); /* Add subtle shadow for depth */
+}
+
 /* Messagebox and button styling */
 #messagebox-container {
     width: 100%;
